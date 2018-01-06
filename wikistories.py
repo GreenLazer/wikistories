@@ -11,6 +11,7 @@ texts = []
 wiks='https://en.wikipedia.org'
 fail = True
 links = []
+paras = []
 
 def randonum(b, e):
     return int(math.floor(random.uniform(b,e)))
@@ -24,12 +25,19 @@ for row in tablee:
     except:
         fail = True
 
-for link in links[0:494]:
-    my_url = wiks + link['href']
+for link in links[20:494]:
+    my_url = wiks + link
     page_soup = BeautifulSoup(requests.get(my_url).text, "html.parser")
-    yo= page_soup.findAll("p")
-    for i in range(6,9):
-        sens=str(yo[i]).split(',')
+
+    plot = page_soup.findAll('h2')[1]
+    endplot = page_soup.findAll('h2')[2]
+    current = plot.next_sibling
+    while current != endplot:
+        paras.append(current)
+        current = current.next_sibling
+
+    for para in paras:
+        sens=str(para).split(',')
         text=[]
         for sen in sens:
             try:
