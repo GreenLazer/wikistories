@@ -4,30 +4,24 @@ import math
 import nltk
 import csv
 from nltk import tokenize
-from urllib.request import urlopen as uReq
-from bs4 import BeautifulSoup as soup
+import requests
+from bs4 import BeautifulSoup
 my_url='https://en.wikipedia.org/wiki/List_of_highest-grossing_films'
 text = []
 texts = ''
 wiks='https://en.wikipedia.org'
 
 def randonum(b, e):
-    return math.floor(random.uniform(b,e))
+    return int(math.floor(random.uniform(b,e)))
 
-uClient = uReq(my_url)
-page_html = uClient.read()
-uClient.close()
-page_soup = soup(page_html, "html.parser")
+page_soup = BeautifulSoup(requests.get(my_url).text, "html.parser")
 tablee = page_soup.find("table", {'class':'sortable'})
 links= tablee.findAll("a")
 
 for link in links:
     if "/wiki/" in link['href']:
         my_url = wiks + link['href']
-        uClient = uReq(my_url)
-        page_html = uClient.read()
-        uClient.close()
-        page_soup = soup(page_html, "html.parser")
+        page_soup = BeautifulSoup(requests.get(my_url).text, "html.parser")
         yo= page_soup.findAll("p")
         for i in range(6,8):
             sens=str(yo[i]).split(',')

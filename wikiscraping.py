@@ -1,8 +1,8 @@
 
 import random
 import math
-from urllib.request import urlopen as uReq
-from bs4 import BeautifulSoup as soup
+import requests
+from bs4 import BeautifulSoup
 my_url='https://en.wikipedia.org/wiki/Portal:Contents/Culture_and_the_arts'
 
 
@@ -13,19 +13,15 @@ wiks='https://en.wikipedia.org'
 i = 0
 
 while i<9:
-    uClient = uReq(my_url)
-    page_html = uClient.read()
-    uClient.close()
-    page_soup = soup(page_html, "html.parser")
-    article = page_soup.find("div", {'id':'mw-content-text'})
-    links= article.findAll("a")
+    soup = BeautifulSoup(requests.get(my_url).text, "html.parser")
 
-    link= links[math.floor(random.uniform(0,10))]
-    print(link['href'])
+    links = soup.find_all('a')
+    link= links[int(math.floor(random.uniform(0,10)))]
+    print(link.get('href'))
     new_link=wiks + link['href']
 
-    while new_link != wiks + link['href']:
-        link= links[math.floor(random.uniform(0,10))]
+    while new_link != wiks + link.get('href'):
+        link= links[int(math.floor(random.uniform(0,10)))]
         new_link=wiks + link['href']
 
     links.append(new_link)
