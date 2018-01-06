@@ -9,6 +9,10 @@ my_url='https://en.wikipedia.org/wiki/List_of_highest-grossing_films'
 text = []
 texts = ''
 wiks='https://en.wikipedia.org'
+fail = True
+links = []
+paras = []
+linknum = 1
 
 def randonum(b, e):
     return int(math.floor(random.uniform(b,e)))
@@ -23,26 +27,26 @@ for row in tablee:
         fail = True
 
 for link in links[20:494]:
+    print(linknum)
+    linknum += 1
     my_url = wiks + link
     page_soup = BeautifulSoup(requests.get(my_url).text, "html.parser")
+    try:
+        plot = page_soup.findAll('h2')[1]
+        endplot = page_soup.findAll('h2')[2]
+        current = plot.next_sibling
+        while current != endplot:
+            paras.append(current)
+            current = current.next_sibling
 
-    plot = page_soup.findAll('h2')[1]
-    endplot = page_soup.findAll('h2')[2]
-    current = plot.next_sibling
-    while current != endplot:
-        paras.append(current)
-        current = current.next_sibling
-
-    for para in paras:
-        sens=str(para).split(',')
-        text=[]
-        for sen in sens:
-            try:
-                print(sen)
-                text.append(sen)
-            except:
-                print('fail1')
-    texts = texts + text[randonum(0,len(text)-1)]
+        for para in paras:
+            sens=str(para).split(',')
+            text=[]
+            text.append(sens[randonum(0,len(sens)-1)])
+            print("new para")
+        texts = texts + text[randonum(0,len(text)-1)]
+    except:
+        print('fail')
             # num=randonum(6,10)
             # print(yo[num])
             # sens=str(yo[num]).split('.')
