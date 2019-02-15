@@ -25,7 +25,6 @@ for row in tablee:
         links.append(row.find('a')['href'])
     except:
         fail = True
-#23-494 are valid-ish
 for link in links[linknum:290]:
     print(linknum)
     linknum += 1
@@ -42,6 +41,6 @@ for link in links[linknum:290]:
             current = current.next_sibling
     except:
         print('fail')
-with open('alltext.txt', 'w') as f:
+with open('alltext.html', 'w') as f:
     for i in paras:
         f.write(str(i))
