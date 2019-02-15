@@ -12,7 +12,7 @@ wiks='https://en.wikipedia.org'
 fail = True
 links = []
 paras = []
-linknum = 1
+linknum = 23
 
 def randonum(b, e):
     return int(math.floor(random.uniform(b,e)))
@@ -25,8 +25,8 @@ for row in tablee:
         links.append(row.find('a')['href'])
     except:
         fail = True
-#20-494 are valid-ish
-for link in links[20:490]:
+#23-494 are valid-ish
+for link in links[linknum:290]:
     print(linknum)
     linknum += 1
     my_url = wiks + link
@@ -36,7 +36,9 @@ for link in links[20:490]:
         endplot = page_soup.findAll('h2')[2]
         current = plot.next_sibling
         while current != endplot:
-            paras.append(current)
+            if current.name == 'p':
+                print current.name
+                paras.append(current)
             current = current.next_sibling
     except:
         print('fail')
