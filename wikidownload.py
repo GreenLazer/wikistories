@@ -1,16 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 my_url='https://en.wikipedia.org/wiki/List_of_highest-grossing_films'
-text = []
-texts = ''
 wiks='https://en.wikipedia.org'
 fail = True
 links = []
 paras = []
 linknum = 23
-
-def randonum(b, e):
-    return int(math.floor(random.uniform(b,e)))
 
 page_soup = BeautifulSoup(requests.get(my_url).text, "html.parser")
 tablee = page_soup.findAll("i")
