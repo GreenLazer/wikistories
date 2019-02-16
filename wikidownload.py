@@ -1,8 +1,3 @@
-import random
-import math
-import nltk
-import csv
-from nltk import tokenize
 import requests
 from bs4 import BeautifulSoup
 my_url='https://en.wikipedia.org/wiki/List_of_highest-grossing_films'
