@@ -1,29 +1,44 @@
 import nltk
+import nltk.data
 from nltk import pos_tag, word_tokenize
+import random
+import math
 sents = ""
+
+def randonum(b, e):
+    return int(math.floor(random.uniform(b,e)))
+
+def NextNNP(word, add):
+    sent = ""
+    word += 1
+    while parts[word][1] !=  'NNP' and word + 1 < len(words):
+        if add == True:
+            sent += words[word] + " "
+        word += 1
+    return sent
 
 with open('text.txt', 'r') as f:
     textuncoded = f.read()
     f.close()
 
+sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 text = repr(textuncoded.decode('unicode-escape'))
-words = nltk.word_tokenize(text)
-PoS = pos_tag(words)
+sentances = sent_detector.tokenize(text)
 
-word = 0
-while word < len(words):
-    wordT = PoS[word] #assign wordT part of speech connected to current word
-    if wordT[1] == 'NNP': #if part of speech is proper noun add word to sents, moce to next word, and start scanning
+for loop in sentances:
+    words = nltk.word_tokenize(sentances[randonum(0,len(sentances))])
+    parts = pos_tag(words)
+    word = 0
+    if parts[word][1] == 'NNP':
         sents += words[word] + " "
-        word += 1
-        wordT = PoS[word]
-        while wordT[1] != 'NNP' and word < len(words): #loops through words until find next proper noun or finishes all words
-            print words[word]
-            wordT = PoS[word]
-            word+= 1
+        sents += NextNNP(word, True)
+    # elif parts[word][1] == 'PRP':
+    #     sents += words[word] + " " + "PRP"
+    #     sents += NextNNP(word, True)
     else:
+        NextNNP(word, False)
         sents += words[word] + " "
-        word += 1
+        sents += NextNNP(word, True)
 
 with open('scrambledtext.txt', 'w') as f:
     for i in sents:
